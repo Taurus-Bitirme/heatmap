@@ -1,0 +1,129 @@
+{
+  "SettingsVersion": 1.2,
+  "SimMode": "Multirotor",
+  "ClockType": "ScalableClock",
+  "ClockSpeed": 2.0,
+  "ViewMode": "FlyWithMe",
+  "Vehicles": {
+    "Drone1": {
+      "VehicleType": "SimpleFlight",
+      "X": 0,
+      "Y": 0,
+      "Z": 0,
+      "Cameras": {
+        "0": {
+          "CaptureSettings": [
+            {
+              "ImageType": 0,
+              "Width": 360,
+              "Height": 360,
+              "FOV_Degrees": 90
+            },
+            {
+              "ImageType": 1,
+              "Width": 360,
+              "Height": 360,
+              "FOV_Degrees": 90
+            },
+            {
+              "ImageType": 2,
+              "Width": 360,
+              "Height": 360,
+              "FOV_Degrees": 90
+            }
+          ],
+          "X": 0, "Y": 0, "Z": 0,
+          "Pitch": -90,
+          "Roll": 0,
+          "Yaw": 0,
+          "Gimbal": {
+            "Stabilization": 1,
+            "Pitch": -90,
+            "Roll": 0,
+            "Yaw": 0
+          }
+        }
+      }
+    },
+    "Drone2": {
+      "VehicleType": "SimpleFlight",
+      "X": 0,
+      "Y": 8,
+      "Z": 0,
+      "Cameras": {
+        "0": {
+          "CaptureSettings": [
+            {
+              "ImageType": 0,
+              "Width": 360,
+              "Height": 360,
+              "FOV_Degrees": 90
+            },
+            {
+              "ImageType": 1,
+              "Width": 360,
+              "Height": 360,
+              "FOV_Degrees": 90
+            },
+            {
+              "ImageType": 2,
+              "Width": 360,
+              "Height": 360,
+              "FOV_Degrees": 90
+            }
+          ],
+          "X": 0, "Y": 0, "Z": 0,
+          "Pitch": -90,
+          "Roll": 0,
+          "Yaw": 0,
+          "Gimbal": {
+            "Stabilization": 1,
+            "Pitch": -90,
+            "Roll": 0,
+            "Yaw": 0
+          }
+        }
+      }
+    },
+    "Drone3": {
+      "VehicleType": "SimpleFlight",
+      "X": 0,
+      "Y": 16,
+      "Z": 0,
+      "Cameras": {
+        "0": {
+          "CaptureSettings": [
+            {
+              "ImageType": 0,
+              "Width": 360,
+              "Height": 360,
+              "FOV_Degrees": 90
+            },
+            {
+              "ImageType": 1,
+              "Width": 360,
+              "Height": 360,
+              "FOV_Degrees": 90
+            },
+            {
+              "ImageType": 2,
+              "Width": 360,
+              "Height": 360,
+              "FOV_Degrees": 90
+            }
+          ],
+          "X": 0, "Y": 0, "Z": 0,
+          "Pitch": -90,
+          "Roll": 0,
+          "Yaw": 0,
+          "Gimbal": {
+            "Stabilization": 1,
+            "Pitch": -90,
+            "Roll": 0,
+            "Yaw": 0
+          }
+        }
+      }
+    }
+  }
+}
