@@ -69,7 +69,7 @@ HOVER_SEC: float         = 1.5
 CAMERA_NAME: str         = "0"
 MODEL_PATH: str          = "./modelimiz.pt"
 
-# ── Footprint tabanlı tarama (scan_algorithm_parcel.py mekanizması) ──────────
+# ── Footprint tabanlı tarama ──────────────────────────────────────────────
 # Sabit aralık yerine irtifa + FOV'dan otomatik hesap:
 #   footprint = 2 × altitude × tan(FOV/2)
 #   step      = footprint × (1 − overlap)
@@ -80,7 +80,7 @@ OVERLAP_RATIO: float = 0.75
 
 def compute_ground_footprint() -> Tuple[float, float]:
     """
-    Kameranın yerde kapladığı alanı hesaplar (scan_algorithm_parcel.py ile aynı).
+    Kameranın yerde kapladığı alanı hesaplar.
     Dönüş: (footprint_genislik_m, footprint_yukseklik_m)
       gw = 2 × irtifa × tan(FOV_H / 2)
       gh = 2 × irtifa × tan(FOV_V / 2)
@@ -187,7 +187,7 @@ def generate_parcel_waypoints(
     step_y: float = None,
 ) -> List[Tuple[float, float]]:
     """
-    scan_algorithm_parcel.py mekanizması — MERKEZLENMİŞ parsel waypoint'leri.
+    MERKEZLENMİŞ parsel waypoint'leri.
 
     Kenardan başlamak yerine her parselin tam ortasını hesaplar:
         center_x = x_min + strip_w * (col + 0.5) / n_cols
@@ -229,7 +229,7 @@ def alani_dronelara_bol() -> Dict[str, List[Tuple[float, float]]]:
     100×100 m alanı X ekseninde NUM_DRONES eşit şeride böler.
     Her drone kendi şeridinde footprint tabanlı boustrophedon tarama yapar.
 
-    Footprint hesabı (scan_algorithm_parcel.py ile aynı mantık):
+    Footprint hesabı:
         footprint = 2 × ALTITUDE_M × tan(FOV/2) = 32 m
         step      = footprint × (1 − OVERLAP_RATIO) = 25.6 m
 
@@ -339,7 +339,7 @@ def bbox_to_ground_ned(
 #  DERINLIK KAMERA — ALAN VE GPS HESAPLAMA
 # ============================================================
 
-# Risk ağırlıkları (heatmap_OPtimUS.py ile aynı)
+# Risk ağırlıkları
 WEIGHT_COLOR: float = 0.2
 WEIGHT_AREA:  float = 0.3
 WEIGHT_MODEL: float = 0.5

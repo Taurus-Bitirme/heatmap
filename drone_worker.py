@@ -32,8 +32,6 @@ from multi_drone_config import (
     bbox_to_ground_ned, bbox_area_from_depth, pixel_to_gps,
     WEIGHT_COLOR, WEIGHT_AREA, WEIGHT_MODEL,
 )
-from heatmap_OPtimUS import analyze_fire_color
-
 
 class PIDController:
     def __init__(self, kp: float, ki: float, kd: float,
@@ -189,6 +187,62 @@ def _fire_color_centroid(img_bgr: np.ndarray, bbox: np.ndarray) -> Tuple[float, 
     cy = y1 + float((ys * weights).sum() / total)
     return cx, cy
 
+# ============================================================
+# RENK ANALİZİ
+# ============================================================
+def analyze_fire_color(img_bgr: np.ndarray, bbox_xyxy: np.ndarray) -> float:
+    """
+    Yangın BB'si içindeki renkleri analiz ederek 0-1 arası bir renk skoru döndürür.
+    Kırmızı/turuncu → yüksek skor (aktif alev)
+    Sarı → orta skor
+    Koyu/gri/beyaz (duman) → düşük skor
+    """
+    x1, y1, x2, y2 = map(int, bbox_xyxy)
+    # Sınır kontrolü
+    x1 = max(0, x1)
+    y1 = max(0, y1)
+    x2 = min(img_bgr.shape[1], x2)
+    y2 = min(img_bgr.shape[0], y2)
+
+    if x2 <= x1 or y2 <= y1:
+        return 0.0
+
+    roi = img_bgr[y1:y2, x1:x2]
+    hsv = cv2.cvtColor(roi, cv2.COLOR_BGR2HSV)
+    total_pixels = max(1, roi.shape[0] * roi.shape[1])
+
+    h, s, v = hsv[:, :, 0], hsv[:, :, 1], hsv[:, :, 2]
+
+    # Kırmızı maske (H: 0-10 ve 170-180, S > 80, V > 80)
+    red_mask_low = (h <= 10) & (s >= 80) & (v >= 80)
+    red_mask_high = (h >= 170) & (s >= 80) & (v >= 80)
+    red_mask = red_mask_low | red_mask_high
+
+    # Turuncu maske (H: 10-25, S > 80, V > 80)
+    orange_mask = (h > 10) & (h <= 25) & (s >= 80) & (v >= 80)
+
+    # Sarı maske (H: 25-35, S > 60, V > 80)
+    yellow_mask = (h > 25) & (h <= 35) & (s >= 60) & (v >= 80)
+
+    # Beyaz/parlak maske (duman veya parıltı — S < 50, V > 200)
+    bright_mask = (s < 50) & (v > 200)
+
+    red_ratio = float(np.sum(red_mask)) / total_pixels
+    orange_ratio = float(np.sum(orange_mask)) / total_pixels
+    yellow_ratio = float(np.sum(yellow_mask)) / total_pixels
+    bright_ratio = float(np.sum(bright_mask)) / total_pixels
+
+    # Ağırlıklı renk skoru
+    raw_score = (
+        red_ratio * 1.0 +
+        orange_ratio * 0.85 +
+        yellow_ratio * 0.5 +
+        bright_ratio * 0.2
+    )
+
+    # 0-1 arasına kısıtla (teorik max = 1.0 tüm pikseller kırmızıysa)
+    color_score = min(1.0, max(0.0, raw_score))
+    return color_score
 
 class DroneWorker(threading.Thread):
     """
@@ -604,7 +658,7 @@ class DroneWorker(threading.Thread):
                         img.shape[1], img.shape[0],
                     )
 
-                    # Renk skoru (HSV analizi — heatmap_OPtimUS ile aynı)
+                    # Renk skoru (HSV analizi — analyze_fire_color())
                     color_src = depth_img_bgr if depth_img_bgr is not None else img
                     color_score = analyze_fire_color(color_src, fused_box)
 

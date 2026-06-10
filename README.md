@@ -50,14 +50,11 @@ Bu dosya 3 drone'u (Drone1, Drone2, Drone3) tanımlar. Her drone için ayrı kam
 final_son_kod/
 │
 ├── multi_drone_mission.py      ← BURADAN BAŞLA — Ana giriş noktası
-├── drone_worker.py             ← Her drone'un görev döngüsü
+├── drone_worker.py             ← Her drone'un görev döngüsü (PID, YOLO, HSV renk analizi, risk skoru)
 ├── central_server.py           ← Merkezi füzyon sunucusu
 ├── multi_drone_config.py       ← Tüm parametreler ve waypoint üretimi
 │
-├── heatmap_OPtimUS.py          ← Tespit pipeline'ı (PID, YOLO, risk skoru)
 ├── static_heatmap.py           ← OSM tabanlı gerçek harita üretimi
-├── scan_algorithm_parcel.py    ← Tek drone GPS tabanlı parsel tarama
-├── rebuild_osm_heatmap.py      ← Mevcut JSON'dan haritayı yeniden üret
 │
 ├── settings_3drone.json        ← AirSim 3 drone konfigürasyonu
 ├── modelimiz.pt                ← Eğitilmiş YOLO modeli (~20 MB)
@@ -95,16 +92,6 @@ scan_results/global/
 ├── global_heatmap.png      ← JET renk haritası (OpenCV)
 ├── osm_heatmap.png         ← Gerçek harita üzerinde ısı katmanı (OSM)
 └── heatmap_raw.npy         ← Ham numpy verisi
-```
-
-### 4. Sadece Haritayı Yeniden Üret
-
-Görevi tekrar çalıştırmadan mevcut veriden OSM haritasını yeniden oluşturmak için:
-
-```bash
-python rebuild_osm_heatmap.py
-# veya farklı bir JSON dosyası için:
-python rebuild_osm_heatmap.py scan_results/global/all_fires.json
 ```
 
 ---
@@ -269,7 +256,7 @@ multi_drone_mission.py
     ├── DroneWorker × 3  (drone_worker.py)
     │     ├── AirSim bağlantısı
     │     ├── Boustrophedon tarama (multi_drone_config.py)
-    │     ├── YOLO çıkarımı (heatmap_OPtimUS.py'den analyze_fire_color)
+    │     ├── YOLO çıkarımı + analyze_fire_color (HSV renk analizi)
     │     ├── PID tracking + edge clip + HSV centroid
     │     ├── Depth kamera → alan (m²) + GPS koordinatı
     │     └── risk_score → result_queue.put(...)
