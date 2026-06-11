@@ -270,30 +270,8 @@ multi_drone_mission.py
           ├── Canlı JET haritası (OpenCV)
           └── Görev sonu → OSM haritası (static_heatmap.py)
 
-## Demo Video Linki
--https://drive.google.com/file/d/19ZWTUCpW2XAu3FnGJR5mnLQ_m3DU4vn6/view?usp=sharing
+
 ```
-## Demo Video Linki
-```
-```
-multi_drone_mission.py
-    │
-    ├── DroneWorker × 3  (drone_worker.py)
-    │     ├── AirSim bağlantısı
-    │     ├── Boustrophedon tarama (multi_drone_config.py)
-    │     ├── YOLO çıkarımı + analyze_fire_color (HSV renk analizi)
-    │     ├── PID tracking + edge clip + HSV centroid
-    │     ├── Depth kamera → alan (m²) + GPS koordinatı
-    │     └── risk_score → result_queue.put(...)
-    │
-    └── CentralHeatmapServer  (central_server.py)
-          ├── result_queue dinle
-          ├── Skor filtresi (≥ 0.20)
-          ├── Uzamsal kümeleme (8 m)
-          ├── Küme birleştirme (12 m)
-          ├── Güven skoru + onay
-          ├── Canlı JET haritası (OpenCV)
-          └── Görev sonu → OSM haritası (static_heatmap.py)
 
 ## Demo Video Linki
 
