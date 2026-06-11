@@ -269,4 +269,7 @@ multi_drone_mission.py
           ├── Güven skoru + onay
           ├── Canlı JET haritası (OpenCV)
           └── Görev sonu → OSM haritası (static_heatmap.py)
+
+## Demo Video Linki
+-https://drive.google.com/file/d/19ZWTUCpW2XAu3FnGJR5mnLQ_m3DU4vn6/view?usp=sharing
 ```
